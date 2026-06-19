@@ -21,7 +21,7 @@ function readProjects() {
     if (!fs.existsSync(PROJECTS_FILE)) return [];
     try {
         return JSON.parse(fs.readFileSync(PROJECTS_FILE));
-    } catch(e) { return []; }
+    } catch (e) { return []; }
 }
 
 function saveProjects(data) {
@@ -57,8 +57,8 @@ const rest = new REST({ version: '10' }).setToken(BOT_TOKEN);
 
 client.once('clientReady', async () => {
     client.user.setPresence({
-        activities: [{ 
-            name: 'xlnt.my.id : active', 
+        activities: [{
+            name: 'xlnt.my.id : active',
             type: ActivityType.Playing,
             assets: {
                 largeImage: 'icon',
@@ -96,139 +96,139 @@ client.on('interactionCreate', async (interaction) => {
     if (interaction.isChatInputCommand()) {
         const { commandName } = interaction;
 
-    if (commandName === 'info') {
-        if (!fs.existsSync(STATS_FILE)) return interaction.reply('No stats recorded yet.');
+        if (commandName === 'info') {
+            if (!fs.existsSync(STATS_FILE)) return interaction.reply('No stats recorded yet.');
 
-        const stats = JSON.parse(fs.readFileSync(STATS_FILE));
-        const months = Object.keys(stats.monthly).sort();
-        const counts = months.map(m => stats.monthly[m]);
+            const stats = JSON.parse(fs.readFileSync(STATS_FILE));
+            const months = Object.keys(stats.monthly).sort();
+            const counts = months.map(m => stats.monthly[m]);
 
-        const chartConfig = {
-            type: 'bar',
-            data: {
-                labels: months,
-                datasets: [{
-                    label: 'Visitors per Month',
-                    data: counts,
-                    backgroundColor: 'rgba(0, 123, 255, 0.5)',
-                    borderColor: 'rgb(0, 123, 255)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                title: { display: true, text: 'VISITOR GROWTH CHART' }
+            const chartConfig = {
+                type: 'bar',
+                data: {
+                    labels: months,
+                    datasets: [{
+                        label: 'Visitors per Month',
+                        data: counts,
+                        backgroundColor: 'rgba(0, 123, 255, 0.5)',
+                        borderColor: 'rgb(0, 123, 255)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    title: { display: true, text: 'VISITOR GROWTH CHART' }
+                }
+            };
+            const chartUrl = `https://quickchart.io/chart?c=${encodeURIComponent(JSON.stringify(chartConfig))}`;
+
+            const embed = new EmbedBuilder()
+                .setColor(0x007BFF)
+                .setTitle('SYSTEM ANALYTICS')
+                .addFields(
+                    { name: 'Total Visitors', value: stats.total.toString(), inline: true },
+                    { name: 'Current Month', value: stats.monthly[months[months.length - 1]].toString(), inline: true }
+                )
+                .setImage(chartUrl)
+                .setTimestamp()
+                .setFooter({ text: 'XLNT MONITORING SYSTEM' });
+
+            await interaction.reply({ embeds: [embed] });
+        }
+
+        if (commandName === 'temp') {
+            if (!fs.existsSync(uploadDir)) return interaction.reply('Staging directory not found.');
+
+            const files = fs.readdirSync(uploadDir);
+            if (files.length === 0) return interaction.reply('Staging zone is empty [0 files].');
+
+            let totalSize = 0;
+            let fileList = files.map(file => {
+                const stats = fs.statSync(path.join(uploadDir, file));
+                totalSize += stats.size;
+                return `- \`${file}\` (${(stats.size / 1024 / 1024).toFixed(2)} MB)`;
+            }).join('\n');
+
+            const embed = new EmbedBuilder()
+                .setColor(0x007BFF)
+                .setTitle('STAGING ZONE AUDIT')
+                .setDescription(fileList.length > 2000 ? fileList.substring(0, 1900) + '...' : fileList)
+                .addFields(
+                    { name: 'Total Files', value: files.length.toString(), inline: true },
+                    { name: 'Total Size', value: `${(totalSize / 1024 / 1024).toFixed(2)} MB`, inline: true }
+                )
+                .setTimestamp();
+
+            await interaction.reply({ embeds: [embed] });
+        }
+
+        if (commandName === 'clear') {
+            if (!interaction.memberPermissions.has('Administrator')) return interaction.reply({ content: 'Unauthorized.', ephemeral: true });
+            if (!fs.existsSync(uploadDir)) return interaction.reply('Staging directory not found.');
+
+            const files = fs.readdirSync(uploadDir);
+            if (files.length === 0) return interaction.reply('Staging zone is already clean.');
+
+            files.forEach(file => {
+                fs.unlinkSync(path.join(uploadDir, file));
+            });
+
+            await interaction.reply(`PURGE SUCCESSFUL: ${files.length} files removed from staging zone.`);
+        }
+
+        if (commandName === 'project') {
+            if (!interaction.memberPermissions.has('Administrator')) return interaction.reply({ content: 'Unauthorized.', ephemeral: true });
+            const subCmd = interaction.options.getSubcommand();
+            const projects = readProjects();
+
+            if (subCmd === 'add') {
+                const name = interaction.options.getString('name');
+                const url = interaction.options.getString('url');
+                const tag = interaction.options.getString('tag') || 'Web App';
+
+                projects.push({ id: Date.now().toString(), name, url, tag });
+                saveProjects(projects);
+                return interaction.reply(`✅ Added project **${name}** (${url})`);
             }
-        };
-        const chartUrl = `https://quickchart.io/chart?c=${encodeURIComponent(JSON.stringify(chartConfig))}`;
 
-        const embed = new EmbedBuilder()
-            .setColor(0x007BFF)
-            .setTitle('SYSTEM ANALYTICS')
-            .addFields(
-                { name: 'Total Visitors', value: stats.total.toString(), inline: true },
-                { name: 'Current Month', value: stats.monthly[months[months.length - 1]].toString(), inline: true }
-            )
-            .setImage(chartUrl)
-            .setTimestamp()
-            .setFooter({ text: 'XLNT MONITORING SYSTEM' });
+            if (subCmd === 'list') {
+                if (projects.length === 0) return interaction.reply('No projects found.');
+                const embed = new EmbedBuilder().setTitle('WEB PROJECTS')
+                    .setDescription(projects.map((p, i) => `**${i + 1}. ${p.name}**\n[${p.url}](${p.url}) - \`${p.tag}\``).join('\n\n'));
+                return interaction.reply({ embeds: [embed] });
+            }
 
-        await interaction.reply({ embeds: [embed] });
-    }
+            if (subCmd === 'delete') {
+                if (projects.length === 0) return interaction.reply('No projects to delete.');
 
-    if (commandName === 'temp') {
-        if (!fs.existsSync(uploadDir)) return interaction.reply('Staging directory not found.');
+                const selectMenu = new StringSelectMenuBuilder()
+                    .setCustomId('select_project_delete')
+                    .setPlaceholder('Select a project to delete')
+                    .addOptions(projects.map(p => ({
+                        label: p.name,
+                        description: p.url.substring(0, 50),
+                        value: p.id
+                    })));
 
-        const files = fs.readdirSync(uploadDir);
-        if (files.length === 0) return interaction.reply('Staging zone is empty [0 files].');
+                const row = new ActionRowBuilder().addComponents(selectMenu);
+                return interaction.reply({ content: 'Choose which project to **DELETE**:', components: [row], ephemeral: true });
+            }
 
-        let totalSize = 0;
-        let fileList = files.map(file => {
-            const stats = fs.statSync(path.join(uploadDir, file));
-            totalSize += stats.size;
-            return `- \`${file}\` (${(stats.size / 1024 / 1024).toFixed(2)} MB)`;
-        }).join('\n');
+            if (subCmd === 'update') {
+                if (projects.length === 0) return interaction.reply('No projects to update.');
 
-        const embed = new EmbedBuilder()
-            .setColor(0x007BFF)
-            .setTitle('STAGING ZONE AUDIT')
-            .setDescription(fileList.length > 2000 ? fileList.substring(0, 1900) + '...' : fileList)
-            .addFields(
-                { name: 'Total Files', value: files.length.toString(), inline: true },
-                { name: 'Total Size', value: `${(totalSize / 1024 / 1024).toFixed(2)} MB`, inline: true }
-            )
-            .setTimestamp();
+                const selectMenu = new StringSelectMenuBuilder()
+                    .setCustomId('select_project_update')
+                    .setPlaceholder('Select a project to update URL')
+                    .addOptions(projects.map(p => ({
+                        label: p.name,
+                        description: p.url.substring(0, 50),
+                        value: p.id
+                    })));
 
-        await interaction.reply({ embeds: [embed] });
-    }
-
-    if (commandName === 'clear') {
-        if (!interaction.memberPermissions.has('Administrator')) return interaction.reply({ content: 'Unauthorized.', ephemeral: true });
-        if (!fs.existsSync(uploadDir)) return interaction.reply('Staging directory not found.');
-
-        const files = fs.readdirSync(uploadDir);
-        if (files.length === 0) return interaction.reply('Staging zone is already clean.');
-
-        files.forEach(file => {
-            fs.unlinkSync(path.join(uploadDir, file));
-        });
-
-        await interaction.reply(`PURGE SUCCESSFUL: ${files.length} files removed from staging zone.`);
-    }
-
-    if (commandName === 'project') {
-        if (!interaction.memberPermissions.has('Administrator')) return interaction.reply({ content: 'Unauthorized.', ephemeral: true });
-        const subCmd = interaction.options.getSubcommand();
-        const projects = readProjects();
-
-        if (subCmd === 'add') {
-            const name = interaction.options.getString('name');
-            const url = interaction.options.getString('url');
-            const tag = interaction.options.getString('tag') || 'Web App';
-            
-            projects.push({ id: Date.now().toString(), name, url, tag });
-            saveProjects(projects);
-            return interaction.reply(`✅ Added project **${name}** (${url})`);
+                const row = new ActionRowBuilder().addComponents(selectMenu);
+                return interaction.reply({ content: 'Choose which project to **UPDATE**:', components: [row], ephemeral: true });
+            }
         }
-
-        if (subCmd === 'list') {
-            if (projects.length === 0) return interaction.reply('No projects found.');
-            const embed = new EmbedBuilder().setTitle('WEB PROJECTS')
-                .setDescription(projects.map((p, i) => `**${i+1}. ${p.name}**\n[${p.url}](${p.url}) - \`${p.tag}\``).join('\n\n'));
-            return interaction.reply({ embeds: [embed] });
-        }
-
-        if (subCmd === 'delete') {
-            if (projects.length === 0) return interaction.reply('No projects to delete.');
-            
-            const selectMenu = new StringSelectMenuBuilder()
-                .setCustomId('select_project_delete')
-                .setPlaceholder('Select a project to delete')
-                .addOptions(projects.map(p => ({
-                    label: p.name,
-                    description: p.url.substring(0, 50),
-                    value: p.id
-                })));
-                
-            const row = new ActionRowBuilder().addComponents(selectMenu);
-            return interaction.reply({ content: 'Choose which project to **DELETE**:', components: [row], ephemeral: true });
-        }
-
-        if (subCmd === 'update') {
-            if (projects.length === 0) return interaction.reply('No projects to update.');
-            
-            const selectMenu = new StringSelectMenuBuilder()
-                .setCustomId('select_project_update')
-                .setPlaceholder('Select a project to update URL')
-                .addOptions(projects.map(p => ({
-                    label: p.name,
-                    description: p.url.substring(0, 50),
-                    value: p.id
-                })));
-                
-            const row = new ActionRowBuilder().addComponents(selectMenu);
-            return interaction.reply({ content: 'Choose which project to **UPDATE**:', components: [row], ephemeral: true });
-        }
-    }
     } else if (interaction.isStringSelectMenu()) {
         const { customId, values } = interaction;
         const projects = readProjects();
@@ -262,15 +262,15 @@ client.on('interactionCreate', async (interaction) => {
         if (interaction.customId.startsWith('modal_update_project_')) {
             const projectId = interaction.customId.replace('modal_update_project_', '');
             const newUrl = interaction.fields.getTextInputValue('newUrlInput');
-            
+
             const projects = readProjects();
             const projectIndex = projects.findIndex(p => p.id === projectId);
-            
+
             if (projectIndex === -1) return interaction.reply({ content: 'Project not found.', ephemeral: true });
-            
+
             projects[projectIndex].url = newUrl;
             saveProjects(projects);
-            
+
             return interaction.reply({ content: `✅ Updated **${projects[projectIndex].name}** URL to <${newUrl}>`, ephemeral: true });
         }
     }
@@ -299,7 +299,7 @@ const storage = multer.diskStorage({
     }
 });
 
-const upload = multer({ 
+const upload = multer({
     storage: storage,
     limits: { fileSize: 5 * 1024 * 1024 }, // 5MB Limit
     fileFilter: (req, file, cb) => {
@@ -446,62 +446,35 @@ client.on('messageCreate', async (message) => {
     }
 });
 
-// URL Clean Up Middleware (Redirect .html and index.html)
-app.use((req, res, next) => {
-    if (req.method === 'GET' && req.path.endsWith('.html')) {
-        let newPath = req.path;
-        if (newPath.endsWith('/index.html')) {
-            newPath = newPath.replace(/\/index\.html$/, '/');
-        } else if (newPath === '/index.html') {
-            newPath = '/';
-        } else {
-            newPath = newPath.replace(/\.html$/, '');
-        }
-        
-        // Prevent redirect loop if the new path is same
-        if (newPath !== req.path) {
-            const query = req.url.slice(req.path.length); // get query string if any
-            return res.redirect(301, newPath + query);
-        }
-    }
-    
-    // Also redirect bare /index
-    if (req.method === 'GET' && (req.path.endsWith('/index') || req.path === '/index')) {
-        const newPath = req.path.replace(/\/index$/, '/');
-        const query = req.url.slice(req.path.length);
-        return res.redirect(301, (newPath === '' ? '/' : newPath) + query);
-    }
-    
-    next();
+// Basic Health Check Endpoint
+app.get('/', (req, res) => {
+    res.json({
+        status: "OK",
+        message: "XLNT Backend API is running.",
+        timestamp: new Date()
+    });
 });
 
-// Visitor Middleware
-app.get('/', (req, res, next) => {
-    const cookies = req.headers.cookie || '';
-    const hasVisited = cookies.includes('xlnt_session=active');
-
-    if (!hasVisited) {
-        const stats = updateStats();
-        updateChannelTopic(stats);
-
-        client.channels.fetch(NOTIFY_CHANNEL_ID).then(channel => {
-            if (channel) {
-                const embed = new EmbedBuilder()
-                    .setColor(0x00FF00)
-                    .setTitle("NEW VISITOR DETECTED")
-                    .setDescription(`A unique session just landed on the home page.\n\n**Total:** ${stats.total}\n**Month:** ${stats.currentMonth}`)
-                    .setTimestamp();
-                channel.send({ embeds: [embed] });
-            }
-        }).catch(err => console.error('[ERROR] Failed to send notification:', err.message));
-
-        res.setHeader('Set-Cookie', 'xlnt_session=active; Path=/; HttpOnly; SameSite=Lax');
-    }
-    next();
-});
-
-app.use(express.static(path.join(__dirname, 'public'), { extensions: ['html'] }));
 app.use(express.json());
+
+// Visitor Tracking API
+app.post('/api/visit', (req, res) => {
+    const stats = updateStats();
+    updateChannelTopic(stats);
+
+    client.channels.fetch(NOTIFY_CHANNEL_ID).then(channel => {
+        if (channel) {
+            const embed = new EmbedBuilder()
+                .setColor(0x00FF00)
+                .setTitle("NEW VISITOR DETECTED")
+                .setDescription(`A unique session just landed on the home page.\n\n**Total:** ${stats.total}\n**Month:** ${stats.currentMonth}`)
+                .setTimestamp();
+            channel.send({ embeds: [embed] });
+        }
+    }).catch(err => console.error('[ERROR] Failed to send notification:', err.message));
+
+    res.json({ success: true });
+});
 
 // Real upload endpoint
 app.post('/upload', submitLimiter, upload.single('file'), (req, res) => {
@@ -550,11 +523,11 @@ app.post('/transmit', submitLimiter, async (req, res) => {
             form.append('payload_json', JSON.stringify(payload));
 
             console.log(`[SYSTEM] Transmitting with Media: ${safeFilename} as files[0]`);
-            
-            await axios.post(DISCORD_WEBHOOK, form, { 
-                headers: { 
+
+            await axios.post(DISCORD_WEBHOOK, form, {
+                headers: {
                     ...form.getHeaders()
-                } 
+                }
             });
 
             fs.unlinkSync(filePath);

@@ -536,6 +536,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     loadProjects();
 
+    // --- Visitor Tracking (Local Storage based for cross-domain) ---
+    if (!localStorage.getItem('xlnt_visited')) {
+        fetch(`${API_BASE_URL}/api/visit`, { method: 'POST' })
+            .then(() => localStorage.setItem('xlnt_visited', 'true'))
+            .catch(err => console.warn('Tracker blocked or failed'));
+    }
+
     // --- Initial ColorBends sync ---
     updateColorBends();
 });
