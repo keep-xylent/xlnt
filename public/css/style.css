@@ -665,6 +665,7 @@ del::after {
     flex-direction: column;
     padding: 2.5rem;
     visibility: hidden;
+    overflow-y: auto;
 }
 
 .side-drawer.open {
@@ -1001,6 +1002,30 @@ del::after {
 
     .footer {
         padding: 1rem 1.5rem;
+    }
+
+    .hamburger {
+        bottom: 1.5rem;
+        right: 1.5rem;
+    }
+
+    .side-drawer {
+        width: 100%;
+        right: -100%;
+        padding: 1.5rem;
+    }
+
+    /* Fix message.html layout on mobile */
+    .back-link {
+        top: 1.5rem !important;
+        left: 1.5rem !important;
+        z-index: 100;
+    }
+
+    .message-container {
+        padding: 2rem !important;
+        margin: 1rem;
+        margin-top: 4rem;
     }
 }
 
