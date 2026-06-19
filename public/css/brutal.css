@@ -1,0 +1,95 @@
+/* BRUTALIST TECH - Industrial Raw */
+body.style-brutal {
+    --bg-main: #000000;
+    --text-primary: #ffffff;
+    --electric-blue: #ff0000;
+    --btn-shadow: rgba(255, 0, 0, 0.4);
+    font-family: 'Courier New', Courier, monospace;
+}
+
+:root.light-mode body.style-brutal {
+    --bg-main: #ffffff;
+    --text-primary: #000000;
+}
+
+
+body.style-brutal .palette-dropdown,
+body.style-brutal .side-drawer {
+    border: 4px solid var(--text-primary);
+    border-radius: 0;
+}
+
+body.style-brutal .style-option {
+    border: 2px solid var(--text-primary);
+    border-radius: 0;
+}
+
+body.style-brutal .hero-title {
+    font-family: 'Courier New', monospace;
+    letter-spacing: -2px;
+    font-weight: 900;
+}
+
+body.style-brutal .shape {
+    filter: none;
+    border: 2px solid var(--text-primary) !important;
+    background: transparent !important;
+    border-radius: 0 !important;
+    opacity: 0.25;
+}
+
+body.style-brutal .shape-1 {
+    animation: brutalFloat1 20s infinite ease-in-out;
+}
+
+body.style-brutal .shape-2 {
+    animation: brutalFloat2 12s infinite ease-in-out;
+}
+
+body.style-brutal .shape-3 {
+    animation: brutalFloat3 16s infinite ease-in-out;
+}
+
+@keyframes brutalFloat1 {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(10vw, -5vh) rotate(1deg); }
+    100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+@keyframes brutalFloat2 {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-15vw, 10vh) rotate(-2deg); }
+    100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+@keyframes brutalFloat3 {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(5vw, 15vh) rotate(1.5deg); }
+    100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+body.style-brutal .highlight {
+    background: var(--text-primary);
+    color: var(--bg-main);
+    padding: 0 0.5em;
+    border-radius: 0;
+}
+
+body.style-brutal .add-btn {
+    border-radius: 0;
+    border: 2px solid var(--text-primary);
+    background: var(--bg-main);
+    color: var(--text-primary);
+}
+
+body.style-brutal .add-btn:hover {
+    background: var(--electric-blue);
+    color: #fff;
+    transform: none;
+    filter: none;
+}
+
+body.style-brutal .text-logo {
+    color: var(--text-primary);
+    text-shadow: 2px 2px 0px var(--electric-blue);
+}

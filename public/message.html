@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>xlnt. | Leave a Message</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/swiss.css">
+    <link rel="stylesheet" href="css/brutal.css">
+    <link rel="stylesheet" href="css/acid.css">
+    <link rel="stylesheet" href="css/saas.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;900&family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+    <script>
+        // Apply saved theme and style immediately to prevent flash
+        const savedTheme = localStorage.getItem('theme');
+        const savedStyle = localStorage.getItem('design-style') || 'swiss';
+
+        if (savedTheme === 'light') {
+            document.documentElement.classList.add('light-mode');
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.className = `style-${savedStyle}`;
+        });
+    </script>
+    <style>
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .message-container {
+            width: 100%;
+            max-width: 600px;
+            padding: 4rem;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(40px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            position: relative;
+            z-index: 10;
+            animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-header {
+            margin-bottom: 3rem;
+        }
+
+        .form-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 3rem;
+            font-weight: 900;
+            letter-spacing: -2px;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-subtitle {
+            font-size: 0.8rem;
+            opacity: 0.5;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .input-group {
+            margin-bottom: 2rem;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.7rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+            opacity: 0.6;
+        }
+
+        .input-group input,
+        .input-group textarea {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            color: var(--text-primary);
+            font-family: inherit;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus,
+        .input-group textarea:focus {
+            outline: none;
+            border-color: var(--electric-blue);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .input-group input::placeholder,
+        .input-group textarea::placeholder {
+            color: var(--text-primary);
+            opacity: 0.2;
+            font-weight: 500;
+        }
+
+        .submit-btn {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--electric-blue);
+            color: #fff;
+            border: none;
+            padding: 1.5rem 3rem;
+            font-size: 0.8rem;
+            font-weight: 900;
+            letter-spacing: 4px;
+            cursor: pointer;
+            border-radius: 4px;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px var(--btn-shadow);
+        }
+
+        .back-link {
+            position: absolute;
+            top: 4rem;
+            left: 4rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 900;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: 0.5;
+            transition: opacity 0.3s;
+        }
+
+        .max-size-label {
+            font-size: 0.6rem;
+            letter-spacing: 1px;
+            opacity: 0.3;
+            font-weight: 600;
+        }
+        .system-status {
+            font-size: 0.6rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            font-family: monospace;
+            transition: all 0.3s ease;
+        }
+        .file-size-progress {
+            font-size: 0.6rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.5);
+            margin-right: 0.5rem;
+            font-family: monospace;
+        }
+
+        .back-link:hover {
+            opacity: 1;
+        }
+        .composer {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+        }
+        .composer.drag-over {
+            border-color: var(--electric-blue);
+            background: rgba(255, 255, 255, 0.08);
+            transform: scale(1.01);
+        }
+        .composer textarea {
+            border: none !important;
+            background: transparent !important;
+            padding: 1.5rem !important;
+            resize: none;
+            flex: 1;
+        }
+        .composer-footer {
+            display: flex;
+            align-items: center;
+            border-top: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.02);
+            padding: 0.5rem 0.75rem;
+            gap: 0.75rem;
+            min-height: 44px;
+        }
+        .footer-left {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-shrink: 0;
+        }
+        .add-btn {
+            width: 28px;
+            height: 28px;
+            background: var(--electric-blue);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 700;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+            border-radius: 4px;
+        }
+        .add-btn:hover {
+            transform: scale(1.1);
+            filter: brightness(1.2);
+        }
+        .file-info {
+            display: none;
+            align-items: center;
+            flex: 1;
+            gap: 0.5rem;
+            font-size: 0.65rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            color: var(--text-primary);
+            min-width: 0;
+            background: rgba(0, 0, 255, 0.15);
+            padding: 6px 12px;
+            border-radius: 4px;
+            border: 1px solid rgba(0, 0, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+        .file-info.active {
+            display: flex;
+        }
+        .file-info.staged {
+            background: rgba(0, 255, 0, 0.15);
+            border-color: rgba(0, 255, 0, 0.3);
+        }
+        .file-info.error {
+            background: rgba(255, 0, 0, 0.15);
+            border-color: rgba(255, 0, 0, 0.3);
+        }
+        .file-name {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            opacity: 0.9;
+        }
+        .remove-file {
+            cursor: pointer;
+            opacity: 0.5;
+            flex-shrink: 0;
+            font-size: 0.6rem;
+            transition: opacity 0.3s;
+        }
+        .remove-file:hover {
+            opacity: 1;
+            color: #ff4444;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page-transition-overlay" id="pageOverlay">
+        <div class="envelope-wrapper" id="transitionEnvelope">
+            <svg class="env-svg" viewBox="0 0 100 66">
+                <path class="env-body" d="M5,5 L95,5 L95,61 L5,61 Z" />
+                <path class="env-flap" d="M5,5 L50,40 L95,5 Z" />
+            </svg>
+        </div>
+    </div>
+
+    <!-- Background Layer (WebGL ColorBends) -->
+    <div class="bg-shapes">
+        <div id="colorBendsCanvas" class="color-bends-canvas"></div>
+        <div class="vignette"></div>
+        <div class="scanline"></div>
+    </div>
+
+    <a href="/" class="back-link" id="homeTrigger" style="text-decoration: none; position: fixed; top: 3.5rem; left: 3.5rem; z-index: 1000002; display: flex; align-items: center; gap: 8px; font-size: 0.7rem; font-weight: 900; letter-spacing: 2px; color: var(--text-primary); opacity: 0.6; transition: opacity 0.3s;">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+        </svg>
+        BACK
+    </a>
+
+    <div class="message-container">
+        <div class="form-header">
+            <h1 class="form-title">LEAVE MESSAGE</h1>
+            <p class="form-subtitle">Transmission Protocol Activated</p>
+        </div>
+
+        <form id="contactForm">
+            <div class="input-group">
+                <label>From Identity</label>
+                <input type="text" id="senderName" placeholder="Enter your name or stay anonymous">
+            </div>
+            <div class="input-group">
+                <label>Data Stream</label>
+                <div class="composer">
+                    <textarea id="userMessage" rows="8" placeholder="Transmit your thoughts..." required></textarea>
+                    
+                    <div class="composer-footer">
+                        <div class="footer-left" id="footerLeft">
+                            <div class="add-btn" id="addBtn" title="Add Media">+</div>
+                            <span class="max-size-label">MAX: 8MB</span>
+                        </div>
+                        <div class="file-info" id="fileInfo">
+                            <span class="file-size-progress"></span>
+                            <span class="file-name"></span>
+                            <span class="remove-file" id="removeFile">REMOVE</span>
+                        </div>
+                    </div>
+                </div>
+                <input type="file" id="fileInput" hidden accept="image/*,video/*">
+            </div>
+            <input type="hidden" id="stagedFilename" value="">
+            <button type="submit" class="submit-btn" id="sendBtn">TRANSMIT DATA</button>
+        </form>
+    </div>
+
+    <script src="js/colorbends.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+        // GLOBAL SCOPE - NO ONE CAN TOUCH THIS
+        window.STAGED_FILENAME = null;
+        window.IS_STAGED = false;
+
+        const contactForm = document.getElementById('contactForm');
+        const sendBtn = document.getElementById('sendBtn');
+        const addBtn = document.getElementById('addBtn');
+        const fileInput = document.getElementById('fileInput');
+        const fileInfo = document.getElementById('fileInfo');
+        const footerLeft = document.getElementById('footerLeft');
+        const statusLabel = document.querySelector('.max-size-label');
+        const sizeProgress = document.querySelector('.file-size-progress');
+
+        const validate = () => {
+            const hasMsg = document.getElementById('userMessage').value.trim().length > 0;
+            const mediaOk = window.STAGED_FILENAME ? window.IS_STAGED : true;
+            sendBtn.disabled = !(hasMsg && mediaOk);
+            sendBtn.style.opacity = sendBtn.disabled ? '0.3' : '1';
+        };
+
+        document.getElementById('userMessage').oninput = validate;
+        addBtn.onclick = () => fileInput.click();
+
+        const handleFile = async (file) => {
+            if (!file) return;
+
+            window.STAGED_FILENAME = null;
+            window.IS_STAGED = false;
+            
+            // RESET STATES
+            fileInfo.classList.remove('staged', 'error');
+            fileInfo.classList.add('active');
+            statusLabel.style.display = 'none';
+            validate();
+
+            const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
+            fileInfo.querySelector('.file-name').textContent = file.name.toUpperCase();
+
+            // CHECK LIMIT
+            if (file.size > 8 * 1024 * 1024) {
+                fileInfo.classList.add('error');
+                sizeProgress.textContent = `LIMIT EXCEEDED [${fileSizeMB}MB]`;
+                return;
+            }
+
+            sizeProgress.textContent = `0.00 / ${fileSizeMB}MB`;
+
+            const fd = new FormData();
+            fd.append('file', file);
+
+            try {
+                const res = await fetch(`${API_BASE_URL}/upload`, { method: 'POST', body: fd });
+                const data = await res.json();
+                
+                if (data.success) {
+                    window.STAGED_FILENAME = data.filename;
+                    
+                    let current = 0;
+                    const step = file.size / 5; // SIMULATE 5 STEPS
+                    const inv = setInterval(() => {
+                        current += step;
+                        const currentMB = Math.min(file.size, current) / (1024 * 1024);
+                        sizeProgress.textContent = `${currentMB.toFixed(2)} / ${fileSizeMB}MB`;
+                        
+                        if (current >= file.size) {
+                            clearInterval(inv);
+                            window.IS_STAGED = true;
+                            fileInfo.classList.add('staged');
+                            validate();
+                        }
+                    }, 100);
+                } else {
+                    throw new Error('Upload failed');
+                }
+            } catch (e) {
+                fileInfo.classList.add('error');
+                sizeProgress.textContent = 'UPLOAD FAILED';
+            }
+        };
+
+        fileInput.onchange = () => handleFile(fileInput.files[0]);
+
+        // --- Drag and Drop Logic ---
+        const composer = document.querySelector('.composer');
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            composer.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+            }, false);
+        });
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            composer.addEventListener(eventName, () => {
+                composer.classList.add('drag-over');
+            }, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            composer.addEventListener(eventName, () => {
+                composer.classList.remove('drag-over');
+            }, false);
+        });
+
+        composer.addEventListener('drop', (e) => {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            if (files.length > 0) {
+                // Ensure it's an image or video if we want to follow accept="image/*,video/*"
+                const file = files[0];
+                if (file.type.startsWith('image/') || file.type.startsWith('video/')) {
+                    handleFile(file);
+                } else {
+                    // Force failure style for invalid type
+                    fileInfo.classList.remove('staged', 'active');
+                    fileInfo.classList.add('active', 'error');
+                    statusLabel.style.display = 'none';
+                    fileInfo.querySelector('.file-name').textContent = file.name.toUpperCase();
+                    sizeProgress.textContent = 'INVALID TYPE';
+                }
+            }
+        }, false);
+
+        document.getElementById('removeFile').onclick = () => {
+            window.STAGED_FILENAME = null;
+            window.IS_STAGED = false;
+            fileInput.value = '';
+            fileInfo.classList.remove('active', 'staged', 'error');
+            statusLabel.style.display = 'block';
+            validate();
+        };
+
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const msg = document.getElementById('userMessage').value;
+            const name = document.getElementById('senderName').value || 'ANONYMOUS';
+
+            console.log('>>> ATTEMPTING DISCORD SEND WITH:', window.STAGED_FILENAME);
+
+            sendBtn.disabled = true;
+            sendBtn.textContent = 'TRANSMITTING...';
+
+            try {
+                const res = await fetch(`${API_BASE_URL}/transmit`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        filename: window.STAGED_FILENAME, // TERKUNCI DI WINDOW
+                        message: msg,
+                        sender: name
+                    })
+                });
+                if (res.ok) {
+                    sendBtn.textContent = 'TRANSMITTED SUCCESSFUL';
+                    sendBtn.style.background = '#00ff00';
+                    setTimeout(() => window.location.href = '/', 1000);
+                } else {
+                    const errData = await res.json();
+                    sendBtn.textContent = 'FAILED: ' + (errData.error || 'SERVER ERR');
+                    sendBtn.style.background = '#ff4444';
+                    sendBtn.disabled = false;
+                }
+            } catch (err) {
+                sendBtn.textContent = 'OFFLINE: CHECK CONNECTION';
+                sendBtn.style.background = '#ff4444';
+                sendBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
