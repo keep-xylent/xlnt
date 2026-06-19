@@ -588,7 +588,8 @@ setInterval(() => {
     if (cleaned > 0) console.log(`[SYSTEM] Auto-cleanup removed ${cleaned} orphaned file(s).`);
 }, 60 * 60 * 1000); // Run every 1 hour
 
-app.listen(PORT, () => {
-    console.log(`[XLNT] Server running at http://localhost:${PORT}`);
+const IP = process.env.IP || '0.0.0.0';
+app.listen(PORT, IP, () => {
+    console.log(`[XLNT] Server running at http://${IP}:${PORT}`);
     console.log(`[SYSTEM] Active staging zone: ${uploadDir}`);
 });
