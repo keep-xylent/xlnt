@@ -544,38 +544,71 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Typing Animation Logic ---
-    const typingTextElement = document.getElementById('typingText');
+    const typingTextRight = document.getElementById('typingText');
+    const typingTextLeft = document.getElementById('typingTextLeft');
     const founderInfo = document.getElementById('founderInfo');
     
-    if (typingTextElement) {
-        const textToType = '"I think, therefore I am."\n\nSolipsism is the philosophical idea that only one\'s mind is sure to exist. The external world and other minds cannot be known and might not exist outside the mind.';
-        let i = 0;
+    if (typingTextRight || typingTextLeft) {
+        const textRight = '"I think, therefore I am."\n\nSolipsism is the philosophical idea that only one\'s mind is sure to exist. The external world and other minds cannot be known and might not exist outside the mind.';
+        const textLeft = 'total 1\n-rwxr-xr-x  1 xlnt  wrld  4096 Jun 24 21:20 <span style="color: #27c93f; font-weight: bold;">your_mind</span>';
+        
+        let i = 0; // right text index
+        let j = 0; // left text index
         let isTypingStarted = false;
         
-        function typeWriter() {
-            if (i < textToType.length) {
-                if (textToType.charAt(i) === '\n') {
-                    typingTextElement.innerHTML += '<br>';
+        let currentRightText = "";
+        let currentLeftText = "";
+        
+        function typeWriterRight() {
+            if (i < textRight.length) {
+                if (textRight.charAt(i) === '\n') {
+                    currentRightText += '<br>';
                 } else {
-                    typingTextElement.innerHTML += textToType.charAt(i);
+                    currentRightText += textRight.charAt(i);
                 }
+                if(typingTextRight) typingTextRight.innerHTML = currentRightText;
                 i++;
-                let speed = Math.random() * 50 + 20; // varying typing speed
-                setTimeout(typeWriter, speed);
+                let speed = Math.random() * 15 + 5;
+                setTimeout(typeWriterRight, speed);
             } else {
-                // Done typing, fade in founder info
                 if (founderInfo) {
                     founderInfo.style.opacity = '1';
                 }
             }
         }
 
-        // Use IntersectionObserver to start typing when visible
+        function typeWriterLeft() {
+            if (j < textLeft.length) {
+                if (textLeft.charAt(j) === '<') {
+                    const tagEnd = textLeft.indexOf('>', j);
+                    if (tagEnd !== -1) {
+                        currentLeftText += textLeft.substring(j, tagEnd + 1);
+                        j = tagEnd + 1;
+                    } else {
+                        currentLeftText += textLeft.charAt(j);
+                        j++;
+                    }
+                } else if (textLeft.charAt(j) === '\n') {
+                    currentLeftText += '<br>';
+                    j++;
+                } else {
+                    currentLeftText += textLeft.charAt(j);
+                    j++;
+                }
+                if(typingTextLeft) typingTextLeft.innerHTML = currentLeftText;
+                let speed = Math.random() * 15 + 5;
+                setTimeout(typeWriterLeft, speed);
+            }
+        }
+
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting && !isTypingStarted) {
                     isTypingStarted = true;
-                    setTimeout(typeWriter, 500); // short delay before starting
+                    setTimeout(() => {
+                        if (typingTextRight) typeWriterRight();
+                        if (typingTextLeft) typeWriterLeft();
+                    }, 500);
                     observer.unobserve(entry.target);
                 }
             });
@@ -583,6 +616,97 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const terminalContainer = document.querySelector('.terminal-container');
         if (terminalContainer) observer.observe(terminalContainer);
+    }
+
+    // --- Divider Logic (Marquee replaces Hex Stream) ---
+
+
+
+    // --- Scroll Tracker & Sticky Header Logic ---
+    const scrollTracker = document.getElementById('scrollTracker');
+    const scrollTrackerDot = document.getElementById('scrollTrackerDot');
+    const scrollTrackerText = document.getElementById('scrollTrackerText');
+    const scrollTrackerFill = document.getElementById('scrollTrackerFill');
+    const header = document.querySelector('.header');
+    const bgShapes = document.querySelector('.bg-shapes');
+
+    window.addEventListener('scroll', () => {
+        // Sticky Header effect
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        if (header) {
+            if (scrollTop > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        }
+
+        // Scroll Tracker effect
+        if (scrollTrackerDot && scrollTrackerText) {
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrollPercent = scrollHeight > 0 ? (scrollTop / scrollHeight) : 0;
+            
+            scrollTrackerDot.style.top = `${scrollPercent * 100}%`;
+            if (scrollTrackerFill) {
+                scrollTrackerFill.style.height = `${scrollPercent * 100}%`;
+            }
+            
+            const percentInt = Math.round(scrollPercent * 100);
+            scrollTrackerText.style.top = `${scrollPercent * 100}%`;
+            scrollTrackerText.textContent = `${percentInt.toString().padStart(2, '0')}%`;
+        }
+    });
+
+    if (scrollTracker) {
+        let isDragging = false;
+
+        const updateScrollFromEvent = (e) => {
+            const rect = scrollTracker.getBoundingClientRect();
+            // Calculate percentage based on where user clicked/dragged on the tracker
+            const clientY = e.clientY !== undefined ? e.clientY : (e.touches && e.touches[0] ? e.touches[0].clientY : 0);
+            const clickY = Math.max(0, Math.min(clientY - rect.top, rect.height));
+            const percent = clickY / rect.height;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            
+            window.scrollTo({
+                top: scrollHeight * percent,
+                behavior: isDragging ? 'auto' : 'smooth'
+            });
+        };
+
+        scrollTracker.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            updateScrollFromEvent(e);
+            document.body.style.userSelect = 'none'; // Prevent text selection
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            e.preventDefault(); // Prevent default dragging behaviors
+            updateScrollFromEvent(e);
+        }, { passive: false });
+
+        window.addEventListener('mouseup', () => {
+            isDragging = false;
+            document.body.style.userSelect = '';
+        });
+
+        // Touch support
+        scrollTracker.addEventListener('touchstart', (e) => {
+            isDragging = true;
+            updateScrollFromEvent(e);
+            document.body.style.userSelect = 'none';
+        }, { passive: true });
+
+        window.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            updateScrollFromEvent(e);
+        }, { passive: true });
+
+        window.addEventListener('touchend', () => {
+            isDragging = false;
+            document.body.style.userSelect = '';
+        });
     }
 
     // --- Initial ColorBends sync ---
