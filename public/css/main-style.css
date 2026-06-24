@@ -1298,15 +1298,15 @@ del::after {
 
    /* Philosophy Section - Terminal Design */
 .philosophy-section {
-    padding: 6rem;
+    padding: 6rem 4rem; /* Mepet layar kiri kanan */
     display: flex;
     flex-direction: row;
-    gap: 2rem;
-    justify-content: center;
+    justify-content: space-between; /* Dorong ke ujung */
     align-items: center;
     position: relative;
     z-index: 20;
     min-height: 100vh;
+    box-sizing: border-box;
     scroll-snap-align: start;
     scroll-snap-stop: always;
     background-image: url('../assets/bg_dark.jpg');
@@ -1362,10 +1362,10 @@ del::after {
 .philosophy-content {
     max-width: 1000px;
     width: 100%;
+    margin: 0 4rem; /* Jaga jarak aman dari widget/app */
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    flex: 1 1 auto;
 }
 
 .terminal-container {
