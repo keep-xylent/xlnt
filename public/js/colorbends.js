@@ -136,20 +136,8 @@
   // Store material reference for dynamic updates
   var _material = null;
 
-  // --- Public API: update colors at runtime ---
-  function setColors(hexArray) {
-    if (!_material) return;
-    var arr = (hexArray || []).filter(Boolean).slice(0, MAX_COLORS).map(hexToVec3);
-    for (var i = 0; i < MAX_COLORS; i++) {
-      var vec = _material.uniforms.uColors.value[i];
-      if (i < arr.length) vec.copy(arr[i]);
-      else vec.set(0, 0, 0);
-    }
-    _material.uniforms.uColorCount.value = arr.length;
-  }
-
-  // Expose globally
-  window.ColorBends = { setColors: setColors };
+  // --- Public API removed since we only use default theme ---
+  window.ColorBends = {};
 
   // --- Initialise ColorBends ---
   function initColorBends(container, opts) {

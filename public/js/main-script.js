@@ -309,81 +309,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- Style Switcher Logic ---
-    const styleOptions = document.querySelectorAll('.style-option');
+    // --- Style & Theme Logic Removed ---
     const body = document.body;
-    const paletteList = document.getElementById('paletteList');
-
-    const stylePalettes = {
-        swiss: [
-            { name: 'ELECTRIC BLUE', hex: '#0000FF', desc: 'CORE BRAND IDENTITY' },
-            { name: 'VOID BLACK', hex: '#0A0A0A', desc: 'ATMOSPHERIC DEPTH' },
-            { name: 'SYSTEM WHITE', hex: '#FFFFFF', desc: 'PURE INTERFACE' }
-        ],
-        brutal: [
-            { name: 'POWER RED', hex: '#FF0000', desc: 'INDUSTRIAL SIGNAL' },
-            { name: 'HEAVY BLACK', hex: '#000000', desc: 'RAW STRUCTURE' },
-            { name: 'CONCRETE', hex: '#F0F0F0', desc: 'UNFINISHED SURFACE' }
-        ],
-        acid: [
-            { name: 'TOXIC GREEN', hex: '#00FF00', desc: 'RADIOACTIVE FLOW' },
-            { name: 'HOT MAGENTA', hex: '#FF00FF', desc: 'GLITCH SPECTRUM' },
-            { name: 'VOID PURPLE', hex: '#0C001A', desc: 'DEEP CHAOS' }
-        ],
-        saas: [
-            { name: 'OCEAN BLUE', hex: '#0984E3', desc: 'MODERN CALM' },
-            { name: 'SOFT MINT', hex: '#55E6C1', desc: 'CLEAN FRESHNESS' },
-            { name: 'SLATE GREY', hex: '#2D3436', desc: 'PROFESSIONAL FLAT' }
-        ]
-    };
-
-    function updatePaletteContent(styleName) {
-        if (!paletteList) return;
-        const colors = stylePalettes[styleName] || stylePalettes.swiss;
-        
-        paletteList.innerHTML = colors.map(color => `
-            <div class="color-item" data-hex="${color.hex}">
-                <div class="color-swatch" style="background-color: ${color.hex}"></div>
-                <div class="color-info">
-                    <span class="color-name">${color.name}</span>
-                    <span class="color-hex">${color.hex}</span>
-                    <p class="color-desc">${color.desc}</p>
-                </div>
-                <div class="copy-icon">
-                    <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
-                        <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
-                    </svg>
-                </div>
-            </div>
-        `).join('');
-
-        attachPaletteListeners();
-    }
-
-    function applyStyle(styleName) {
-        body.classList.remove('style-swiss', 'style-brutal', 'style-acid', 'style-saas', 'style-default', 'style-brutalism', 'style-antidesign', 'style-flat');
-        body.classList.add(`style-${styleName}`);
-        
-        styleOptions.forEach(opt => {
-            opt.classList.toggle('active', opt.getAttribute('data-style') === styleName);
-        });
-
-        updatePaletteContent(styleName);
-        updateColorBends(styleName);
-    }
-
-    // Load saved style
-    const savedStyle = localStorage.getItem('design-style') || 'swiss';
-    applyStyle(savedStyle);
-
-    styleOptions.forEach(option => {
-        option.addEventListener('click', () => {
-            const style = option.getAttribute('data-style');
-            applyStyle(style);
-            localStorage.setItem('design-style', style);
-        });
-    });
-
+    body.classList.add('style-swiss'); // Default style
+    
     function attachPaletteListeners() {
         const colorItems = document.querySelectorAll('.color-item');
         colorItems.forEach(item => {
@@ -395,33 +324,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
-
-    // --- Theme Toggle Logic ---
-    const themeToggle = document.getElementById('themeToggle');
-    if (themeToggle) {
-        const sunIcon = themeToggle.querySelector('.sun-icon');
-        const moonIcon = themeToggle.querySelector('.moon-icon');
-
-        const updateThemeIcons = (isLight) => {
-            if (isLight) {
-                sunIcon.style.display = 'none';
-                moonIcon.style.display = 'block';
-            } else {
-                sunIcon.style.display = 'block';
-                moonIcon.style.display = 'none';
-            }
-        };
-
-        // Initial State
-        updateThemeIcons(root.classList.contains('light-mode'));
-
-        themeToggle.addEventListener('click', () => {
-            const isLight = root.classList.toggle('light-mode');
-            localStorage.setItem('theme', isLight ? 'light' : 'dark');
-            updateThemeIcons(isLight);
-            updateColorBends();
-        });
-    }
+    attachPaletteListeners();
 
     // --- Message Logic (DEPRECATED: Moved to contact.html) ---
     // Removed to prevent conflict with contact.html submission logic
