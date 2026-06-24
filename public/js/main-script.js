@@ -659,21 +659,24 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(updateMacClock, 60000); // Update every minute
 
     // --- Mac Apps Logic ---
-    function populateMacApps(username) {
+    function populateMacApps() {
         const appsSide = document.getElementById('macAppsSide');
         if (!appsSide) return;
         
-        // Add a skeleton loader or keep empty
-        fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=4`)
+        fetch(`${API_BASE_URL}/api/projects`)
             .then(res => res.json())
             .then(data => {
                 if (!Array.isArray(data)) return;
                 
-                const html = data.map(repo => {
-                    const shortName = repo.name.length > 10 ? repo.name.substring(0, 8) + '..' : repo.name;
-                    const letter = repo.name.charAt(0).toUpperCase();
+                const projects = data.slice(0, 4);
+                
+                const html = projects.map(proj => {
+                    const name = proj.name || 'App';
+                    const shortName = name.length > 10 ? name.substring(0, 8) + '..' : name;
+                    const letter = name.charAt(0).toUpperCase();
+                    const url = proj.url || '#';
                     return `
-                        <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer" class="mac-app-wrapper" title="${repo.name}">
+                        <a href="${url}" target="_blank" rel="noopener noreferrer" class="mac-app-wrapper" title="${name}">
                             <div class="mac-app-icon">${letter}</div>
                             <div class="mac-app-label">${shortName}</div>
                         </a>
@@ -684,5 +687,5 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .catch(err => console.error('Failed to load apps:', err));
     }
-    populateMacApps('keep-xylent');
+    populateMacApps();
 });
