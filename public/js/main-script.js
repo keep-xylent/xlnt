@@ -657,4 +657,32 @@ document.addEventListener('DOMContentLoaded', () => {
     
     updateMacClock();
     setInterval(updateMacClock, 60000); // Update every minute
+
+    // --- Mac Apps Logic ---
+    function populateMacApps(username) {
+        const appsSide = document.getElementById('macAppsSide');
+        if (!appsSide) return;
+        
+        // Add a skeleton loader or keep empty
+        fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=4`)
+            .then(res => res.json())
+            .then(data => {
+                if (!Array.isArray(data)) return;
+                
+                const html = data.map(repo => {
+                    const shortName = repo.name.length > 10 ? repo.name.substring(0, 8) + '..' : repo.name;
+                    const letter = repo.name.charAt(0).toUpperCase();
+                    return `
+                        <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer" class="mac-app-wrapper" title="${repo.name}">
+                            <div class="mac-app-icon">${letter}</div>
+                            <div class="mac-app-label">${shortName}</div>
+                        </a>
+                    `;
+                }).join('');
+                
+                appsSide.innerHTML = html;
+            })
+            .catch(err => console.error('Failed to load apps:', err));
+    }
+    populateMacApps('keep-xylent');
 });
