@@ -462,7 +462,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    const transitionLinks = document.querySelectorAll('.msg-trigger, .back-link');
+    const transitionLinks = document.querySelectorAll('.msg-trigger, .back-link, .hero-msg-btn');
     transitionLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             const href = link.getAttribute('href');
