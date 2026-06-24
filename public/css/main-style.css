@@ -1778,7 +1778,7 @@ del::after {
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 12px;
-    z-index: 10000;
+    z-index: 9999999;
     opacity: 0;
     pointer-events: none;
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -1790,7 +1790,7 @@ del::after {
 
 .mac-window-modal.open {
     opacity: 1;
-    pointer-events: auto;
+    pointer-events: auto !important;
     transform: translate(-50%, -50%) scale(1);
 }
 
@@ -1861,6 +1861,10 @@ del::after {
     font-size: 0.9rem;
     outline: none;
     transition: border-color 0.3s;
+    position: relative;
+    z-index: 2;
+    pointer-events: auto !important;
+    user-select: text !important;
 }
 
 :root.light-mode .mac-input {
@@ -1882,6 +1886,9 @@ del::after {
     font-weight: 700;
     cursor: pointer;
     transition: transform 0.2s, opacity 0.2s;
+    position: relative;
+    z-index: 2;
+    pointer-events: auto !important;
 }
 
 .mac-btn:hover {
