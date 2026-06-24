@@ -287,28 +287,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Side Drawer Logic ---
-    const hamburger = document.querySelector('.hamburger');
-    const sideDrawer = document.getElementById('sideDrawer');
-
-    if (hamburger) {
-        hamburger.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const isOpen = sideDrawer.classList.toggle('open');
-            hamburger.classList.toggle('active', isOpen);
-        });
-    }
-
-    // Close drawer when clicking outside
-    document.addEventListener('click', (e) => {
-        if (sideDrawer && sideDrawer.classList.contains('open')) {
-            if (!sideDrawer.contains(e.target) && !hamburger.contains(e.target)) {
-                sideDrawer.classList.remove('open');
-                hamburger.classList.remove('active');
-            }
-        }
-    });
-
     // --- Style & Theme Logic Removed ---
     const body = document.body;
     body.classList.add('style-swiss'); // Default style
