@@ -326,6 +326,33 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     attachPaletteListeners();
 
+    // --- Theme Toggle Logic ---
+    const themeToggle = document.getElementById('themeToggle');
+    if (themeToggle) {
+        const sunIcon = themeToggle.querySelector('.sun-icon');
+        const moonIcon = themeToggle.querySelector('.moon-icon');
+        const rootElement = document.documentElement;
+
+        const updateThemeIcons = (isLight) => {
+            if (isLight) {
+                sunIcon.style.display = 'none';
+                moonIcon.style.display = 'block';
+            } else {
+                sunIcon.style.display = 'block';
+                moonIcon.style.display = 'none';
+            }
+        };
+
+        // Initial State
+        updateThemeIcons(rootElement.classList.contains('light-mode'));
+
+        themeToggle.addEventListener('click', () => {
+            const isLight = rootElement.classList.toggle('light-mode');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            updateThemeIcons(isLight);
+        });
+    }
+
     // --- Message Logic (DEPRECATED: Moved to contact.html) ---
     // Removed to prevent conflict with contact.html submission logic
 
