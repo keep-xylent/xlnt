@@ -639,6 +639,22 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Initial ColorBends sync ---
-    updateColorBends();
+    // --- Mac Widget Clock Logic ---
+    function updateMacClock() {
+        const timeEl = document.getElementById('macClockTime');
+        const dateEl = document.getElementById('macClockDate');
+        
+        if (!timeEl || !dateEl) return;
+        
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        timeEl.textContent = `${hours}:${minutes}`;
+        
+        const options = { weekday: 'long', day: 'numeric', month: 'short' };
+        dateEl.textContent = now.toLocaleDateString('en-US', options);
+    }
+    
+    updateMacClock();
+    setInterval(updateMacClock, 60000); // Update every minute
 });

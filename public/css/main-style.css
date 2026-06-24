@@ -1551,3 +1551,122 @@ del::after {
     color: #ffffff !important;
     text-shadow: 0px 2px 4px rgba(0,0,0,0.8), 0px 0px 10px rgba(0,0,0,0.5) !important;
 }
+
+/* --- Mac Widgets Layout --- */
+.philosophy-layout {
+    display: flex;
+    gap: 3rem;
+    width: 100%;
+}
+
+.philosophy-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.mac-widgets-container {
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding-top: 10px; /* Align visually with terminal header */
+}
+
+@media (max-width: 900px) {
+    .philosophy-layout {
+        flex-direction: column;
+    }
+    .mac-widgets-container {
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    .mac-widget {
+        flex: 1;
+    }
+}
+
+@media (max-width: 600px) {
+    .mac-widgets-container {
+        flex-direction: column;
+    }
+}
+
+.mac-widget {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 1.5rem;
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.mac-widget:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+:root.light-mode .mac-widget {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: #000000;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+:root.light-mode .mac-widget:hover {
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.clock-widget {
+    align-items: center;
+}
+
+.clock-time {
+    font-size: 2.5rem;
+    font-weight: 300;
+    letter-spacing: -1px;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.clock-date {
+    font-size: 0.85rem;
+    opacity: 0.7;
+    font-weight: 500;
+}
+
+.weather-widget {
+    gap: 0.8rem;
+}
+
+.weather-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.weather-temp {
+    font-size: 2rem;
+    font-weight: 300;
+    line-height: 1;
+}
+
+.weather-desc {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.weather-loc {
+    font-size: 0.8rem;
+    opacity: 0.6;
+    font-weight: 500;
+}
