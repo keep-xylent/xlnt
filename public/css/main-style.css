@@ -1553,34 +1553,29 @@ del::after {
 }
 
 /* --- Mac Widgets Layout --- */
-.philosophy-layout {
-    display: flex;
-    gap: 3rem;
-    width: 100%;
-}
-
-.philosophy-main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-}
-
 .mac-widgets-container {
     width: 250px;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    padding-top: 10px; /* Align visually with terminal header */
 }
 
-@media (max-width: 900px) {
-    .philosophy-layout {
-        flex-direction: column;
-    }
-    .mac-widgets-container {
-        width: 100%;
+.mac-widgets-absolute {
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+}
+
+@media (max-width: 1200px) {
+    .mac-widgets-absolute {
+        position: static;
+        transform: none;
+        margin-top: 3rem;
         flex-direction: row;
+        width: 100%;
+        max-width: 800px;
         justify-content: space-between;
     }
     .mac-widget {
