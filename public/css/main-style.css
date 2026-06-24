@@ -1301,7 +1301,7 @@ del::after {
     padding: 6rem;
     display: flex;
     flex-direction: row;
-    gap: 4rem;
+    gap: 2rem;
     justify-content: center;
     align-items: center;
     position: relative;
@@ -1365,6 +1365,7 @@ del::after {
     display: flex;
     flex-direction: column;
     gap: 2rem;
+    flex: 1 1 auto;
 }
 
 .terminal-container {
@@ -1634,9 +1635,10 @@ del::after {
     text-shadow: none;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 800px) {
     .philosophy-section {
         flex-direction: column;
+        padding: 4rem 2rem;
     }
     .mac-widgets-side {
         width: 100%;
