@@ -173,9 +173,14 @@ html::-webkit-scrollbar {
     font-size: 2rem;
     letter-spacing: -2px;
     line-height: 1;
-    color: var(--electric-blue);
-    text-shadow: 2px 2px 0px var(--text-primary);
+    color: var(--text-primary);
+    text-shadow: 2px 2px 0px var(--electric-blue);
     transition: all 0.5s ease;
+}
+
+:root.light-mode .text-logo {
+    color: var(--text-primary);
+    text-shadow: none;
 }
 
 .header-info {
