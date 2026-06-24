@@ -1298,7 +1298,7 @@ del::after {
 
     /* Philosophy Section - Terminal Design */
 .philosophy-section {
-    padding: 6rem 0; /* Kembalikan padding atas bawah saja */
+    padding: 6rem 0; 
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -1313,6 +1313,16 @@ del::after {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+}
+
+.philosophy-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start; /* Align tops */
+    width: 100%;
+    padding: 0 3.5rem;
+    box-sizing: border-box;
 }
 
 :root.light-mode .philosophy-section {
@@ -1565,19 +1575,11 @@ del::after {
 }
 
 .mac-widgets-side {
-    position: absolute;
-    right: 2%;
-    top: 50%;
-    transform: translateY(-50%);
     width: 250px;
     z-index: 10;
 }
 
 .mac-apps-side {
-    position: absolute;
-    left: 2%;
-    top: 50%;
-    transform: translateY(-50%);
     width: 100px;
     display: flex;
     flex-direction: column;
@@ -1647,8 +1649,12 @@ del::after {
 
 @media (max-width: 1200px) {
     .philosophy-section {
+        padding: 4rem 0;
+    }
+    .philosophy-row {
         flex-direction: column;
-        padding: 4rem 2rem;
+        align-items: center;
+        padding: 0 2rem;
     }
     .mac-widgets-side {
         position: static;

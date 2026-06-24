@@ -218,58 +218,60 @@
 
 
         <section class="philosophy-section">
-            <!-- Left Side Apps -->
-            <div class="mac-apps-side" id="macAppsSide">
-                <!-- Apps will be populated here by JS -->
-            </div>
+            <div class="philosophy-row">
+                <!-- Left Side Apps -->
+                <div class="mac-apps-side" id="macAppsSide">
+                    <!-- Apps will be populated here by JS -->
+                </div>
 
-            <div class="philosophy-content">
-                <div class="terminal-container">
-                    <div class="terminal-header">
-                        <div class="dots">
-                            <span class="dot"></span>
-                            <span class="dot"></span>
-                            <span class="dot"></span>
+                <div class="philosophy-content">
+                    <div class="terminal-container">
+                        <div class="terminal-header">
+                            <div class="dots">
+                                <span class="dot"></span>
+                                <span class="dot"></span>
+                                <span class="dot"></span>
+                            </div>
+                            <span class="terminal-title">tmux: xlnt@wrld / message.txt</span>
                         </div>
-                        <span class="terminal-title">tmux: xlnt@wrld / message.txt</span>
-                    </div>
-                    <div class="terminal-split-view">
-                        <div class="terminal-pane terminal-pane-left">
-                            <div class="cli-mockup" style="background: transparent; padding: 0; border: none;">
-                                <div class="cli-line"><span class="cli-user">xlnt@wrld</span> <span class="cli-arrow">~ $</span> <span class="cli-cmd">ls -l</span></div>
-                                <div class="cli-output-table"><span id="typingTextLeft" class="typing-text"></span><span class="cursor" id="cursorLeft">_</span></div>
+                        <div class="terminal-split-view">
+                            <div class="terminal-pane terminal-pane-left">
+                                <div class="cli-mockup" style="background: transparent; padding: 0; border: none;">
+                                    <div class="cli-line"><span class="cli-user">xlnt@wrld</span> <span class="cli-arrow">~ $</span> <span class="cli-cmd">ls -l</span></div>
+                                    <div class="cli-output-table"><span id="typingTextLeft" class="typing-text"></span><span class="cursor" id="cursorLeft">_</span></div>
+                                </div>
+                            </div>
+                            <div class="terminal-pane terminal-pane-right">
+                                <div class="cli-mockup" style="background: transparent; padding: 0; border: none;">
+                                    <div class="cli-line"><span class="cli-user">xlnt@wrld</span> <span class="cli-arrow">~ $</span> <span class="cli-cmd">cat message.txt</span></div>
+                                    <div class="cli-output" style="margin-top: 1rem;"><span id="typingText" class="typing-text"></span><span class="cursor">_</span></div>
+                                </div>
                             </div>
                         </div>
-                        <div class="terminal-pane terminal-pane-right">
-                            <div class="cli-mockup" style="background: transparent; padding: 0; border: none;">
-                                <div class="cli-line"><span class="cli-user">xlnt@wrld</span> <span class="cli-arrow">~ $</span> <span class="cli-cmd">cat message.txt</span></div>
-                                <div class="cli-output" style="margin-top: 1rem;"><span id="typingText" class="typing-text"></span><span class="cursor">_</span></div>
-                            </div>
+                    </div>
+                    <div class="founder-info fade-in-delay" id="founderInfo" style="opacity: 0; transition: opacity 2s ease;">
+                        <span class="founder-label">FOUNDATIONAL FIGURE</span>
+                        <h3 class="founder-name">René Descartes (1596 - 1650)</h3>
+                    </div>
+                </div>
+                
+                <div class="mac-widgets-container mac-widgets-side">
+                    <!-- Clock Widget -->
+                    <div class="mac-widget clock-widget">
+                        <div class="clock-time" id="macClockTime">00:00</div>
+                        <div class="clock-date" id="macClockDate">Monday, 1 Jan</div>
+                    </div>
+                    <!-- Weather Widget -->
+                    <div class="mac-widget weather-widget">
+                        <div class="weather-top">
+                            <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor" style="color: #ffbd2e;">
+                                <path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18.75a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-1.5a.75.75 0 01.75-.75zM6.166 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.06 1.06l1.59 1.591zM2.25 12a.75.75 0 01.75-.75H5.25a.75.75 0 010 1.5H3a.75.75 0 01-.75-.75zM6.166 5.106a.75.75 0 00-1.06 1.06l1.59 1.591a.75.75 0 101.06-1.06l-1.59-1.591z" />
+                            </svg>
+                            <div class="weather-temp">24°</div>
                         </div>
+                        <div class="weather-desc">Sunny</div>
+                        <div class="weather-loc">Jakarta, ID</div>
                     </div>
-                </div>
-                <div class="founder-info fade-in-delay" id="founderInfo" style="opacity: 0; transition: opacity 2s ease;">
-                    <span class="founder-label">FOUNDATIONAL FIGURE</span>
-                    <h3 class="founder-name">René Descartes (1596 - 1650)</h3>
-                </div>
-            </div>
-            
-            <div class="mac-widgets-container mac-widgets-side">
-                <!-- Clock Widget -->
-                <div class="mac-widget clock-widget">
-                    <div class="clock-time" id="macClockTime">00:00</div>
-                    <div class="clock-date" id="macClockDate">Monday, 1 Jan</div>
-                </div>
-                <!-- Weather Widget -->
-                <div class="mac-widget weather-widget">
-                    <div class="weather-top">
-                        <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor" style="color: #ffbd2e;">
-                            <path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18.75a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-1.5a.75.75 0 01.75-.75zM6.166 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.06 1.06l1.59 1.591zM2.25 12a.75.75 0 01.75-.75H5.25a.75.75 0 010 1.5H3a.75.75 0 01-.75-.75zM6.166 5.106a.75.75 0 00-1.06 1.06l1.59 1.591a.75.75 0 101.06-1.06l-1.59-1.591z" />
-                        </svg>
-                        <div class="weather-temp">24°</div>
-                    </div>
-                    <div class="weather-desc">Sunny</div>
-                    <div class="weather-loc">Jakarta, ID</div>
                 </div>
             </div>
         </section>
