@@ -666,4 +666,110 @@ document.addEventListener('DOMContentLoaded', () => {
             .catch(err => console.error('Failed to load apps:', err));
     }
     populateMacApps();
+
+    // --- Weather Widget Logic ---
+    const weatherWidget = document.getElementById('weatherWidget');
+    const weatherModal = document.getElementById('weatherModal');
+    const closeWeatherModal = document.getElementById('closeWeatherModal');
+    const weatherLocationInput = document.getElementById('weatherLocationInput');
+    const weatherSaveBtn = document.getElementById('weatherSaveBtn');
+    const weatherStatusMsg = document.getElementById('weatherStatusMsg');
+    
+    const weatherTempDisplay = document.getElementById('weatherTempDisplay');
+    const weatherDescDisplay = document.getElementById('weatherDescDisplay');
+    const weatherLocDisplay = document.getElementById('weatherLocDisplay');
+
+    // Weather Codes mapping based on WMO Weather interpretation codes
+    function getWeatherDesc(code) {
+        if (code === 0) return 'Clear';
+        if (code === 1 || code === 2 || code === 3) return 'Cloudy';
+        if (code >= 45 && code <= 48) return 'Foggy';
+        if (code >= 51 && code <= 67) return 'Rainy';
+        if (code >= 71 && code <= 77) return 'Snow';
+        if (code >= 80 && code <= 82) return 'Showers';
+        if (code >= 95 && code <= 99) return 'Storm';
+        return 'Sunny';
+    }
+
+    async function updateWeather(locationName) {
+        try {
+            weatherStatusMsg.textContent = 'Searching location...';
+            // 1. Geocoding
+            const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(locationName)}&count=1`);
+            const geoData = await geoRes.json();
+            
+            if (!geoData.results || geoData.results.length === 0) {
+                weatherStatusMsg.textContent = 'Location not found.';
+                weatherStatusMsg.style.color = '#ff4444';
+                return;
+            }
+            
+            const location = geoData.results[0];
+            const lat = location.latitude;
+            const lon = location.longitude;
+            const displayName = `${location.name}, ${location.country_code || location.country}`;
+            
+            weatherStatusMsg.textContent = 'Fetching weather...';
+            
+            // 2. Weather Forecast
+            const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
+            const weatherData = await weatherRes.json();
+            
+            if (weatherData.current_weather) {
+                const temp = Math.round(weatherData.current_weather.temperature);
+                const code = weatherData.current_weather.weathercode;
+                const desc = getWeatherDesc(code);
+                
+                // Update UI
+                weatherTempDisplay.textContent = `${temp}°`;
+                weatherDescDisplay.textContent = desc;
+                weatherLocDisplay.textContent = displayName;
+                
+                // Save to local storage
+                localStorage.setItem('xlnt_weather_loc', locationName);
+                
+                weatherStatusMsg.textContent = 'Weather updated successfully!';
+                weatherStatusMsg.style.color = '#27c93f';
+                
+                setTimeout(() => {
+                    weatherModal.classList.remove('open');
+                    weatherStatusMsg.textContent = '';
+                    weatherStatusMsg.style.color = 'var(--text-meta)';
+                }, 1000);
+            }
+        } catch (e) {
+            weatherStatusMsg.textContent = 'Error fetching weather.';
+            weatherStatusMsg.style.color = '#ff4444';
+        }
+    }
+
+    if (weatherWidget && weatherModal) {
+        weatherWidget.addEventListener('click', () => {
+            weatherModal.classList.add('open');
+            weatherLocationInput.value = localStorage.getItem('xlnt_weather_loc') || 'Jakarta';
+        });
+
+        closeWeatherModal.addEventListener('click', () => {
+            weatherModal.classList.remove('open');
+            weatherStatusMsg.textContent = '';
+        });
+
+        weatherSaveBtn.addEventListener('click', () => {
+            const loc = weatherLocationInput.value.trim();
+            if (loc) {
+                updateWeather(loc);
+            }
+        });
+
+        weatherLocationInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const loc = weatherLocationInput.value.trim();
+                if (loc) updateWeather(loc);
+            }
+        });
+
+        // Init weather on load
+        const savedLoc = localStorage.getItem('xlnt_weather_loc') || 'Jakarta';
+        updateWeather(savedLoc);
+    }
 });
