@@ -543,6 +543,48 @@ document.addEventListener('DOMContentLoaded', () => {
             .catch(err => console.warn('Tracker blocked or failed'));
     }
 
+    // --- Typing Animation Logic ---
+    const typingTextElement = document.getElementById('typingText');
+    const founderInfo = document.getElementById('founderInfo');
+    
+    if (typingTextElement) {
+        const textToType = '"I think, therefore I am."\n\nSolipsism is the philosophical idea that only one\'s mind is sure to exist. The external world and other minds cannot be known and might not exist outside the mind.';
+        let i = 0;
+        let isTypingStarted = false;
+        
+        function typeWriter() {
+            if (i < textToType.length) {
+                if (textToType.charAt(i) === '\n') {
+                    typingTextElement.innerHTML += '<br>';
+                } else {
+                    typingTextElement.innerHTML += textToType.charAt(i);
+                }
+                i++;
+                let speed = Math.random() * 50 + 20; // varying typing speed
+                setTimeout(typeWriter, speed);
+            } else {
+                // Done typing, fade in founder info
+                if (founderInfo) {
+                    founderInfo.style.opacity = '1';
+                }
+            }
+        }
+
+        // Use IntersectionObserver to start typing when visible
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !isTypingStarted) {
+                    isTypingStarted = true;
+                    setTimeout(typeWriter, 500); // short delay before starting
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        const terminalContainer = document.querySelector('.terminal-container');
+        if (terminalContainer) observer.observe(terminalContainer);
+    }
+
     // --- Initial ColorBends sync ---
     updateColorBends();
 });
