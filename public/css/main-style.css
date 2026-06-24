@@ -1300,7 +1300,8 @@ del::after {
 .philosophy-section {
     padding: 6rem;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    gap: 4rem;
     justify-content: center;
     align-items: center;
     position: relative;
@@ -1560,22 +1561,21 @@ del::after {
     gap: 1.5rem;
 }
 
-.mac-widgets-absolute {
-    position: absolute;
-    right: 5%;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 100;
+.mac-widgets-side {
+    width: 250px;
+    flex-shrink: 0;
 }
 
 @media (max-width: 1200px) {
-    .mac-widgets-absolute {
-        position: static;
-        transform: none;
-        margin-top: 3rem;
-        flex-direction: row;
+    .philosophy-section {
+        flex-direction: column;
+    }
+    .mac-widgets-side {
         width: 100%;
         max-width: 800px;
+        flex-direction: row;
+        display: flex;
+        gap: 1.5rem;
         justify-content: space-between;
     }
     .mac-widget {
