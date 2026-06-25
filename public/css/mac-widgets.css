@@ -143,6 +143,14 @@
     background: rgba(255, 255, 255, 0.9);
 }
 
+.feature-widget {
+    background: rgba(10, 10, 10, 0.65);
+}
+
+:root.light-mode .feature-widget {
+    background: rgba(255, 255, 255, 0.85);
+}
+
 .clock-widget {
     align-items: center;
 }
