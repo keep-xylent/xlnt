@@ -1,0 +1,325 @@
+/* --- Mac Widgets Layout --- */
+.mac-widgets-container {
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.mac-widgets-side {
+    width: 250px;
+    z-index: 10;
+}
+
+.mac-apps-side {
+    width: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+    z-index: 10;
+}
+
+.mac-app-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+}
+
+.mac-app-icon {
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    color: #fff;
+    transition: transform 0.3s ease, background 0.3s ease;
+    font-size: 1.5rem;
+    font-weight: 900;
+}
+
+.mac-app-wrapper:hover .mac-app-icon {
+    transform: translateY(-5px) scale(1.05);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.mac-app-label {
+    margin-top: 0.5rem;
+    font-size: 0.7rem;
+    text-align: center;
+    color: #fff;
+    opacity: 0.8;
+    max-width: 80px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+:root.light-mode .mac-app-icon {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: #000000;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+}
+
+:root.light-mode .mac-app-wrapper:hover .mac-app-icon {
+    background: rgba(255, 255, 255, 0.9);
+}
+
+:root.light-mode .mac-app-label {
+    color: #000000;
+    text-shadow: none;
+}
+
+@media (max-width: 1200px) {
+    .mac-widgets-side {
+        position: static;
+        transform: none;
+        width: 100%;
+        max-width: 800px;
+        flex-direction: row;
+        display: flex;
+        gap: 1.5rem;
+        justify-content: space-between;
+        margin-top: 2rem;
+    }
+    .mac-widget {
+        flex: 1;
+    }
+    .mac-apps-side {
+        position: static;
+        transform: none;
+        width: 100%;
+        max-width: 800px;
+        flex-direction: row;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 2rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .mac-widgets-container {
+        flex-direction: column;
+    }
+}
+
+.mac-widget {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 1.5rem;
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.mac-widget:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+:root.light-mode .mac-widget {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: #000000;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+:root.light-mode .mac-widget:hover {
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.clock-widget {
+    align-items: center;
+}
+
+.clock-time {
+    font-size: 2.5rem;
+    font-weight: 300;
+    letter-spacing: -1px;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.clock-date {
+    font-size: 0.85rem;
+    opacity: 0.7;
+    font-weight: 500;
+}
+
+.weather-widget {
+    gap: 0.8rem;
+}
+
+.weather-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.weather-temp {
+    font-size: 2rem;
+    font-weight: 300;
+    line-height: 1;
+}
+
+.weather-desc {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.weather-loc {
+    font-size: 0.8rem;
+    opacity: 0.6;
+    font-weight: 500;
+}
+
+/* --- Weather App Modal --- */
+.mac-window-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    width: 90%;
+    max-width: 400px;
+    background: rgba(20, 20, 20, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    z-index: 9999999;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.mac-window-modal.open {
+    opacity: 1;
+    pointer-events: auto !important;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+:root.light-mode .mac-window-modal {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+}
+
+.mac-window-header {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    background: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    position: relative;
+}
+
+:root.light-mode .mac-window-header {
+    background: rgba(255, 255, 255, 0.3);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.mac-window-header .dots {
+    display: flex;
+    gap: 8px;
+    position: absolute;
+    left: 15px;
+}
+
+.mac-window-header .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.mac-window-header .dot.close { background: #ff5f56; }
+.mac-window-header .dot.minimize { background: #ffbd2e; }
+.mac-window-header .dot.maximize { background: #27c93f; }
+
+.mac-window-header .window-title {
+    width: 100%;
+    text-align: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-meta);
+}
+
+.mac-window-content {
+    padding: 2rem;
+}
+
+.weather-modal-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.mac-input {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.3s;
+    position: relative;
+    z-index: 2;
+    pointer-events: auto !important;
+    user-select: text !important;
+}
+
+:root.light-mode .mac-input {
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.mac-input:focus {
+    border-color: var(--text-accent);
+}
+
+.mac-btn {
+    background: var(--text-primary);
+    color: var(--bg-main);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-family: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.2s;
+    position: relative;
+    z-index: 2;
+    pointer-events: auto !important;
+}
+
+.mac-btn:hover {
+    opacity: 0.9;
+    transform: scale(1.05);
+}
+
+.mac-btn:active {
+    transform: scale(0.95);
+}

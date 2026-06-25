@@ -1,0 +1,74 @@
+.vignette {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, transparent 40%, rgba(0, 0, 0, 0.4) 100%);
+    pointer-events: none;
+    z-index: 5;
+}
+
+.scanline {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 50%, transparent 50%);
+    background-size: 100% 4px;
+    pointer-events: none;
+    z-index: 6;
+    opacity: 0.5;
+}
+
+/* --- Ambient Background --- */
+.bg-shapes {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    overflow: hidden;
+    pointer-events: none;
+    background: var(--bg-main);
+    transition: background-color 0.5s ease;
+}
+
+.color-bends-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: auto;
+}
+
+/* --- UI Layer --- */
+.ui-layer {
+    display: contents;
+}
+
+.main-content {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 5rem 6rem 0 6rem; /* Add top padding to balance fixed header */
+    min-height: 100vh;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        padding: 0 1.5rem;
+    }
+
+    .footer {
+        padding: 1rem 1.5rem;
+    }
+}

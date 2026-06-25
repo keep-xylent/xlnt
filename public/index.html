@@ -264,7 +264,7 @@
                     <!-- Weather Widget -->
                     <div class="mac-widget weather-widget" id="weatherWidget" style="cursor: pointer;" title="Open Weather Settings">
                         <div class="weather-top">
-                            <img src="assets/weather_icon.png" alt="Weather Icon" style="width: 40px; height: 40px; object-fit: contain;">
+                            <div id="weatherIconDisplay" style="font-size: 2.2rem; line-height: 1;">☀️</div>
                             <div class="weather-temp" id="weatherTempDisplay">24°</div>
                         </div>
                         <div class="weather-desc" id="weatherDescDisplay">Sunny</div>
@@ -273,10 +273,31 @@
                 </div>
             </div>
         </section>
+
+        <!-- Feature Section with ColorBends Background -->
+        <section class="features-section" style="min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 6rem; position: relative; z-index: 20; scroll-snap-align: start; background: transparent;">
+            <h2 style="font-size: 6vw; font-weight: 900; text-transform: uppercase; margin-bottom: 2rem; letter-spacing: -2px;" class="intro-fade">BEYOND THE <span style="color: #fff; background-color: var(--electric-blue); padding: 0 10px; display: inline-block; transform: skewX(-5deg);">LIMITS</span></h2>
+            <p style="font-size: 1.2rem; max-width: 600px; opacity: 0.8; line-height: 1.6; margin-bottom: 4rem;" class="intro-fade delay-1">We build digital experiences that push boundaries. Utilizing modern web capabilities, raw performance, and bold aesthetics.</p>
+            <div style="display: flex; gap: 2rem; flex-wrap: wrap; justify-content: center;" class="intro-fade delay-2">
+                <div class="mac-widget" style="width: 280px; height: 180px; text-align: center; background: rgba(10, 10, 10, 0.65); border: 1px solid rgba(255, 255, 255, 0.1);">
+                    <h3 style="font-size: 1.5rem; font-weight: 900; margin-bottom: 1rem; color: var(--text-primary);">PERFORMANCE</h3>
+                    <p style="font-size: 0.85rem; opacity: 0.7; color: var(--text-primary);">Blazing fast load times and optimized WebGL rendering for 60fps experiences.</p>
+                </div>
+                <div class="mac-widget" style="width: 280px; height: 180px; text-align: center; background: rgba(10, 10, 10, 0.65); border: 1px solid rgba(255, 255, 255, 0.1);">
+                    <h3 style="font-size: 1.5rem; font-weight: 900; margin-bottom: 1rem; color: var(--text-primary);">AESTHETICS</h3>
+                    <p style="font-size: 0.85rem; opacity: 0.7; color: var(--text-primary);">Bold, brutalist, and beautiful designs that stand out in the modern web.</p>
+                </div>
+                <div class="mac-widget" style="width: 280px; height: 180px; text-align: center; background: rgba(10, 10, 10, 0.65); border: 1px solid rgba(255, 255, 255, 0.1);">
+                    <h3 style="font-size: 1.5rem; font-weight: 900; margin-bottom: 1rem; color: var(--text-primary);">MODULARITY</h3>
+                    <p style="font-size: 0.85rem; opacity: 0.7; color: var(--text-primary);">Clean architecture and scalable components for maintainable codebases.</p>
+                </div>
+            </div>
+        </section>
         <div class="scroll-tracker" id="scrollTracker">
             <div class="scroll-tracker-line">
                 <div class="scroll-tracker-fill" id="scrollTrackerFill"></div>
                 <div class="scroll-section-dot" style="top: 0%;"></div>
+                <div class="scroll-section-dot" style="top: 50%;"></div>
                 <div class="scroll-section-dot" style="top: 100%;"></div>
             </div>
             <div class="scroll-tracker-dot" id="scrollTrackerDot"></div>
@@ -301,7 +322,7 @@
         </div>
         <div class="mac-window-content">
             <div class="weather-modal-body">
-                <img src="assets/weather_icon.png" alt="Weather" style="width: 80px; height: 80px; margin-bottom: 1rem; object-fit: contain;">
+                <div id="weatherModalIcon" style="font-size: 4rem; margin-bottom: 1rem; line-height: 1;">☀️</div>
                 <h3 style="margin-bottom: 0.5rem; letter-spacing: 1px;">Current Location</h3>
                 <div style="display: flex; gap: 10px; width: 100%; margin-top: 10px;">
                     <input type="text" id="weatherLocationInput" placeholder="e.g. Jakarta, ID" class="mac-input" style="flex: 1;">

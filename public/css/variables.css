@@ -1,0 +1,67 @@
+:root {
+    --electric-blue: #0000FF;
+    --accent-red: #ff3e3e;
+
+    /* Theme Variables - Default Dark */
+    --bg-main: #050505;
+    --bg-stop-1: #151515;
+    --bg-stop-2: #050505;
+    --text-primary: #ffffff;
+    --shape-base: #1a1a1a;
+    --v-tag-opacity: 0.5;
+    --shadow-glow: 0 0 10px rgba(0, 0, 255, 0.3);
+    --shape-shadow: -30px 30px 60px rgba(0, 0, 0, 0.5);
+    --shape-blur: 40px;
+    --shape-block: linear-gradient(90deg, #111, #0a0a0a);
+    --border-color: rgba(255, 255, 255, 0.1);
+    --btn-shadow: rgba(0, 0, 255, 0.3);
+}
+
+:root.light-mode {
+    --bg-main: #f0f2f5;
+    --bg-stop-1: #ffffff;
+    --bg-stop-2: #e6e8eb;
+    --text-primary: #000000; /* Mengubah teks utama menjadi hitam */
+    --text-accent: var(--electric-blue); /* Menyimpan biru untuk aksen */
+    --text-meta: #555555; /* Abu-abu untuk teks kecil/metadata */
+    --shape-base: #cbd0d8;
+    --v-tag-opacity: 0.2;
+    --highlight-shadow: none;
+    --shadow-glow: none;
+    --shape-shadow: -30px 30px 60px rgba(0, 0, 0, 0.05);
+    --shape-blur: 20px;
+    --shape-block: linear-gradient(90deg, #d8dce3, #c4c9d1);
+    --border-color: rgba(0, 0, 0, 0.1);
+    --btn-shadow: rgba(0, 0, 255, 0.15);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+}
+
+body,
+html {
+    width: 100%;
+    min-height: 100vh;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    overflow-x: clip;
+    position: relative;
+    transition: background-color 0.5s ease, color 0.5s ease;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+body::-webkit-scrollbar,
+html::-webkit-scrollbar {
+    display: none;
+}

@@ -1,0 +1,271 @@
+/* Philosophy Section - Terminal Design */
+.philosophy-section {
+    padding: 6rem 0; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 20;
+    min-height: 100vh;
+    box-sizing: border-box;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    background-image: url('../assets/bg_dark.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.philosophy-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    padding: 0 3.5rem;
+    box-sizing: border-box;
+}
+
+:root.light-mode .philosophy-section {
+    background-image: url('../assets/bg_light.jpg');
+}
+
+.hud-column {
+    position: absolute;
+    top: 15%;
+    bottom: 15%;
+    width: 280px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    font-family: monospace;
+    font-size: 0.7rem;
+    color: var(--text-primary);
+    opacity: 0.25;
+    pointer-events: none;
+    overflow: hidden;
+    mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+    z-index: 10;
+}
+
+.hud-left {
+    left: 2rem;
+    text-align: left;
+}
+
+.hud-right {
+    right: 2rem;
+    text-align: right;
+}
+
+.hud-line {
+    margin-bottom: 0.4rem;
+    white-space: nowrap;
+}
+
+@media (max-width: 1500px) {
+    .hud-column {
+        display: none;
+    }
+}
+
+.philosophy-content {
+    max-width: 900px;
+    width: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    position: relative;
+    z-index: 5;
+}
+
+.terminal-split-view {
+    display: flex;
+    min-height: 350px;
+}
+
+.terminal-pane {
+    flex: 1;
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    font-size: 1.1rem;
+}
+
+.terminal-pane-left {
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+:root.light-mode .terminal-pane-left {
+    border-right: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+    .terminal-split-view {
+        flex-direction: column;
+    }
+    .terminal-pane-left {
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    :root.light-mode .terminal-pane-left {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+}
+
+.cli-line {
+    margin-bottom: 0.5rem;
+}
+
+.cli-user {
+    color: #27c93f;
+    font-weight: bold;
+}
+
+.cli-arrow {
+    color: var(--text-meta);
+    margin: 0 0.5rem;
+}
+
+.cli-cmd {
+    color: var(--text-primary);
+}
+
+.cli-output-table {
+    margin-top: 1rem;
+    line-height: 1.4;
+    color: var(--text-meta);
+    white-space: pre;
+    overflow-x: auto;
+}
+
+.cli-output {
+    margin-top: 1rem;
+    font-weight: normal;
+    color: var(--text-primary);
+}
+
+.terminal-container {
+    background: rgba(10, 10, 10, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    width: 100%;
+}
+
+:root.light-mode .terminal-container {
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+}
+
+.terminal-header {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+}
+
+:root.light-mode .terminal-header {
+    background: rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.dots {
+    display: flex;
+    gap: 8px;
+    position: absolute;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.dot:nth-child(1) { background: #ff5f56; }
+.dot:nth-child(2) { background: #ffbd2e; }
+.dot:nth-child(3) { background: #27c93f; }
+
+.terminal-title {
+    margin: 0 auto;
+    font-size: 0.8rem;
+    font-family: monospace;
+    opacity: 0.5;
+    letter-spacing: 1px;
+}
+
+.terminal-text-wrapper {
+    font-size: 1.2rem;
+    font-family: monospace;
+    font-weight: normal;
+    line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+    .terminal-text-wrapper {
+        font-size: 1rem;
+    }
+}
+
+.typing-text {
+    color: var(--text-primary);
+}
+
+.cursor {
+    color: #ffffff;
+    animation: blink 1s step-end infinite;
+    margin-left: 5px;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+.founder-info {
+    text-align: right;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 2rem;
+}
+
+:root.light-mode .founder-info {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.founder-label {
+    font-size: 0.7rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    opacity: 0.9;
+    color: #ffffff !important;
+    text-shadow: 0px 2px 4px rgba(0,0,0,0.8), 0px 0px 10px rgba(0,0,0,0.5) !important;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.founder-name {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: #ffffff !important;
+    text-shadow: 0px 2px 4px rgba(0,0,0,0.8), 0px 0px 10px rgba(0,0,0,0.5) !important;
+}
+
+@media (max-width: 1200px) {
+    .philosophy-section {
+        padding: 4rem 0;
+    }
+    .philosophy-row {
+        flex-direction: column;
+        align-items: center;
+        padding: 0 2rem;
+    }
+}

@@ -691,6 +691,17 @@ document.addEventListener('DOMContentLoaded', () => {
         return 'Sunny';
     }
 
+    function getWeatherEmoji(code) {
+        if (code === 0) return '☀️'; // Clear
+        if (code === 1 || code === 2 || code === 3) return '☁️'; // Cloudy
+        if (code >= 45 && code <= 48) return '🌫️'; // Foggy
+        if (code >= 51 && code <= 67) return '🌧️'; // Rainy
+        if (code >= 71 && code <= 77) return '❄️'; // Snow
+        if (code >= 80 && code <= 82) return '🌦️'; // Showers
+        if (code >= 95 && code <= 99) return '⛈️'; // Storm
+        return '☀️'; // Default
+    }
+
     async function updateWeather(locationName) {
         try {
             weatherStatusMsg.textContent = 'Searching location...';
@@ -719,11 +730,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 const temp = Math.round(weatherData.current_weather.temperature);
                 const code = weatherData.current_weather.weathercode;
                 const desc = getWeatherDesc(code);
+                const emoji = getWeatherEmoji(code);
                 
                 // Update UI
                 weatherTempDisplay.textContent = `${temp}°`;
                 weatherDescDisplay.textContent = desc;
                 weatherLocDisplay.textContent = displayName;
+                
+                const iconDisplay = document.getElementById('weatherIconDisplay');
+                const modalIcon = document.getElementById('weatherModalIcon');
+                if (iconDisplay) iconDisplay.textContent = emoji;
+                if (modalIcon) modalIcon.textContent = emoji;
                 
                 // Save to local storage
                 localStorage.setItem('xlnt_weather_loc', locationName);
@@ -746,7 +763,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (weatherWidget && weatherModal) {
         weatherWidget.addEventListener('click', () => {
             weatherModal.classList.add('open');
-            weatherLocationInput.value = localStorage.getItem('xlnt_weather_loc') || 'Jakarta';
+            weatherLocationInput.value = localStorage.getItem('xlnt_weather_loc') || 'Sidoarjo';
         });
 
         closeWeatherModal.addEventListener('click', () => {
@@ -769,7 +786,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Init weather on load
-        const savedLoc = localStorage.getItem('xlnt_weather_loc') || 'Jakarta';
+        const savedLoc = localStorage.getItem('xlnt_weather_loc') || 'Sidoarjo';
         updateWeather(savedLoc);
     }
 });

@@ -36,6 +36,7 @@
     'uniform float uWarpStrength;',
     'uniform vec2 uPointer;',
     'uniform float uMouseInfluence;',
+    'uniform float uScroll;',
     'uniform float uParallax;',
     'uniform float uNoise;',
     'uniform int uIterations;',
@@ -46,6 +47,7 @@
     'void main() {',
     '  float t = uTime * uSpeed;',
     '  vec2 p = vUv * 2.0 - 1.0;',
+    '  p.y -= uScroll;',
     '  p += uPointer * uParallax * 0.1;',
     '  vec2 rp = vec2(p.x * uRot.x - p.y * uRot.y, p.x * uRot.y + p.y * uRot.x);',
     '  vec2 q = vec2(rp.x * (uCanvas.x / uCanvas.y), rp.y);',
@@ -170,6 +172,7 @@
         uWarpStrength:   { value: opts.warpStrength },
         uPointer:        { value: new THREE.Vector2(0, 0) },
         uMouseInfluence: { value: opts.mouseInfluence },
+        uScroll:         { value: 0 },
         uParallax:       { value: opts.parallax },
         uNoise:          { value: opts.noise },
         uIterations:     { value: opts.iterations },
@@ -237,6 +240,14 @@
       pointerTarget.set(x, y);
     });
 
+    var targetScroll = 0;
+    var currentScroll = 0;
+    
+    window.addEventListener('scroll', function() {
+        // Map 100vh of scroll to 2.0 in shader space
+        targetScroll = (window.scrollY / window.innerHeight) * 2.0;
+    });
+
     // --- Animation loop ---
     var clock = new THREE.Clock();
     var rafId = null;
@@ -253,6 +264,9 @@
       var amt = Math.min(1, dt * pointerSmooth);
       pointerCurrent.lerp(pointerTarget, amt);
       material.uniforms.uPointer.value.copy(pointerCurrent);
+      
+      currentScroll += (targetScroll - currentScroll) * amt;
+      material.uniforms.uScroll.value = currentScroll;
 
       renderer.render(scene, camera);
       rafId = requestAnimationFrame(loop);
